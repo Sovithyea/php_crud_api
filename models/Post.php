@@ -38,6 +38,15 @@
             return $posts;
         }
 
+        public function create()
+        {
+            $query = 'SELECT name, id FROM categories';
+
+            $categories = $this->connection->prepare($query);
+            $categories->execute();
+            return $categories;
+        }
+
         public function store($params)
         {
             try
@@ -97,6 +106,27 @@
             return $post;
         }
 
+        public function edit($id)
+        {
+            $this->id = $id;
+
+            // $query = 'SELECT
+            //     posts.id,
+            //     posts.title,
+            //     posts.description,
+            //     posts.category_id,
+            //     FROM '.$this->table.' 
+            //     WHERE posts.id = :id
+            //     LIMIT 0, 1
+            // ';
+                $query = 'SELECT * FROM posts, categories';
+            // var_dump($this->id);
+            $tables = $this->connection->prepare($query);
+            $tables->bindParam('id', $this->id);
+            $tables->execute();
+            return $tables;
+        }
+
         public function update($params)
         {
             try
@@ -133,5 +163,20 @@
             {
                 echo $e->getMessage();
             }
+        }
+
+        public function destroy($id)
+        {
+            $this->id = $id;
+
+            $query = 'DELETE FROM '.$this->table.'
+                WHERE posts.id = :id
+            ';
+
+            $post = $this->connection->prepare($query);
+            $post->bindParam('id', $this->id);
+            $post->execute();
+            
+            return $post;   
         }
     }

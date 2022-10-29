@@ -14,32 +14,20 @@
     $db = $database->connect();
 
     $post = new Post($db);
+
     $data = json_decode(file_get_contents('php://input'));
-
-    if(count($_POST))
-    {
-        $params = [
-            'title' => $_POST['title'],
-            'description' => $_POST['description'],
-            'category_id' => $_POST['category_id']
-        ];
-
-        if($post->store($params))
-        {
-            echo json_encode(['message' => 'Post added successfully.']);
-        }
-
-    }
-    elseif (isset($data))
+    
+    if (isset($data))
     {
         $params = [
             'title' => $data->title,
             'description' => $data->description,
-            'category_id' => $data->category_id
+            'category_id' => $data->category_id,
+            'id' => $data->id
         ];
 
-        if($post->store($params))
+        if($post->update($params))
         {
-            echo json_encode(['message' => 'Post added successfully.']);
+            echo json_encode(['message' => 'Post update successfully.']);
         }
     }
