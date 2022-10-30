@@ -40,10 +40,12 @@
 
         public function create()
         {
-            $query = 'SELECT name, id FROM categories';
+            $query = 'SELECT id, name FROM categories';
 
             $categories = $this->connection->prepare($query);
+
             $categories->execute();
+            // var_dump($categories);
             return $categories;
         }
 

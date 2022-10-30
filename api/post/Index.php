@@ -5,7 +5,7 @@
 
     Header('Access-Control-Allow-Origin: *');
     Header('Content-Type: application/json');
-    Header('Access-Controller-Allow-Method: POST');
+    header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 
     include_once('../../config/Database.php');
     include_once('../../models/Post.php');
@@ -20,10 +20,9 @@
     if($data->rowCount())
     {
         $posts = [];
-        
+        $res = [];
         while($row = $data->fetch(PDO::FETCH_OBJ))
         {
-            // print_r($row);
             $posts[$row->id] = [
                 'id' => $row->id,
                 'category_name' => $row->category,
@@ -31,9 +30,11 @@
                 'title'=> $row->title,
                 'created_at' => $row->created_at
             ];
+            array_push($res, $posts[$row->id]);
         }
         // var_dump($posts);
-        echo json_encode($posts);
+        // $dataa.array_push($posts);
+        echo json_encode(["data"=>$res]);
     }
     else
     {
