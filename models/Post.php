@@ -112,16 +112,16 @@
         {
             $this->id = $id;
 
-            // $query = 'SELECT
-            //     posts.id,
-            //     posts.title,
-            //     posts.description,
-            //     posts.category_id,
-            //     FROM '.$this->table.' 
-            //     WHERE posts.id = :id
-            //     LIMIT 0, 1
-            // ';
-                $query = 'SELECT * FROM posts, categories';
+            $query = 'SELECT
+                posts.id,
+                posts.title,
+                posts.description,
+                posts.category_id,
+                FROM '.$this->table.' 
+                WHERE posts.id = :id
+                LIMIT 0, 1
+            ';
+                // $query = 'SELECT * FROM posts, categories';
             // var_dump($this->id);
             $tables = $this->connection->prepare($query);
             $tables->bindParam('id', $this->id);
@@ -177,8 +177,15 @@
 
             $post = $this->connection->prepare($query);
             $post->bindParam('id', $this->id);
-            $post->execute();
+            if($post->execute())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
             
-            return $post;   
+            // return $post;   
         }
     }

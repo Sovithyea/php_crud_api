@@ -20,7 +20,7 @@
     if($data->rowCount())
     {
         $categories = [];
-
+        $res = [];
         while($row = $data->fetch(PDO::FETCH_OBJ))
         {
             // print_r($row);
@@ -28,10 +28,11 @@
                 'id' => $row->id,
                 'name' => $row->name
             ];
+            array_push($res, $categories[$row->id]);
         }
         // var_dump($posts);
         // $dataa.array_push($posts);
-        echo json_encode([$categories]);
+        echo json_encode(['categories' => $res]);
     }
     else
     {
